@@ -49,3 +49,7 @@ Route::get('/computervision/{gui.py}', function ($filename) {
         return response('File not found.', 404);
     }
 });
+
+use App\Http\Controllers\LoginController;
+Route::get('/Login', [LoginController::class, 'showLoginForm'])->name('login.form');
+Route::post('/Login', [LoginController::class, 'login'])->name('login.submit');

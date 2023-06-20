@@ -23,7 +23,7 @@ class LoginController extends Controller
             // Jika verifikasi berhasil, redirect ke halaman yang diinginkan
             return redirect()->intended('/dashboard');
         }
-
+        
         // Jika verifikasi gagal, kembali ke halaman login dengan pesan error
         return back()->withErrors([
             'email' => 'Email atau password salah.',

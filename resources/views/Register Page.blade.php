@@ -1,3 +1,39 @@
+<?php
+
+@include 'config.php';
+
+if(isset($_POST['submit'])){
+
+   $name = mysqli_real_escape_string($conn, $_POST['name']);
+   $email = mysqli_real_escape_string($conn, $_POST['email']);
+   $pass = md5($_POST['password']);
+   $cpass = md5($_POST['cpassword']);
+
+   $select = " SELECT * FROM user_form WHERE email = '$email' && password = '$pass' ";
+
+   $result = mysqli_query($conn, $select);
+
+   if(mysqli_num_rows($result) > 0){
+
+      $error[] = 'user already exist!';
+
+   }else{
+
+      if($pass != $cpass){
+         $error[] = 'password not matched!';
+      }else{
+         $insert = "INSERT INTO user_form(name, email, password) VALUES('$name','$email','$password')";
+         mysqli_query($conn, $insert);
+         header('location:Login.blade.php');
+      }
+   }
+
+};
+
+
+?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -57,26 +93,20 @@
                         Register
                     </p>
                     <form>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Name*</label>
-                        <input type="text" class="form-control curved-10" placeholder="Enter your Nickname" id="exampleInputPassword1">
-                      </div>
-                        <div class="form-group">
-                          <label for="exampleInputEmail1">Email address*</label>
-                          <input type="email" class="form-control curved-10" placeholder="Enter your Email here" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        </div>
-                        <div class="form-group">
-                          <label for="exampleInputPassword1">Password*</label>
-                          <input type="password" class="form-control curved-10" placeholder="Enter your Password here" id="exampleInputPassword1">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Confirm Password*</label>
-                            <input type="password" class="form-control curved-10" placeholder="Enter your Password here" id="exampleInputPassword1">
+                       
+                      <div class="form-container">
+                          <form action="" method="post">
+                          <input type="text" name="name" Required placeholder="Input your name">
+                          <input type="email" name="email" Required placeholder="Input your email">
+                          <input type="password" name="password" Required placeholder="Input your password">
+                          <input type="password" name="cpassword" Required placeholder="Input your confirmation password">
+                          
+                          <input type="submit" name="submit" value="register now" class="btn btn-login font-weight-bold col-6"> 
+                          <p>already have an account? <a href="/Login">login now</a></p>
+                          
                           </div>
-                          <button class="btn btn-login font-weight-bold col-6">
-                            <a href="/Login">Register</a>
-                        </button>
-                      </form>   
+                        
+                      </form>    
                     </div>
                 </div>
             </div>
